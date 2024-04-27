@@ -2,31 +2,36 @@
 
 public class Musica
 {
-  public string Nome { get; set; }
+  public string Nome { get; }
   public Banda Artista { get; }
   public int Duracao { get; set; }
   public bool Disponivel { get; set; }
   public string DescricaoResumida => $"A musica {Nome} pertence à banda {Artista}";
 
 
-  public Musica(string nome, Banda artista, int duracao)
+  public Musica(string nome, Banda artista)
   {
     Nome = nome;
     Artista = artista;
-    Duracao = duracao;
   }
 
   public string DuracaoConvertidaEmMinuto()
   {
-    string minutos = ((double)Duracao / 60).ToString();
-    return minutos.Replace(",", ":");
+    double hora, minuto, segundo, resto;
+
+    hora = Duracao / 3600;
+    resto = Duracao % 3600;
+    minuto = resto / 60;
+    segundo = resto % 60;
+    string tempo = $"{hora}:{minuto}:{segundo}";
+    return tempo.Replace(",", ":");
   }
 
   public void ExibirFichaTecnica()
   {
     var disponivel = Disponivel ? "Diponivel no palno" : "Não disponivel no plano";
     Console.WriteLine($"Musica: {Nome} - {DescricaoResumida}" +
-      $"\r\nArtista: {Artista}" +
-      $"\r\nDuração: {new TimeSpan(Duracao).TotalMinutes} {disponivel}");
+      $"\r\nArtista: {Artista.Nome}" +
+      $"\r\nDuração: {DuracaoConvertidaEmMinuto()} {disponivel}\r\n");
   }
 }
